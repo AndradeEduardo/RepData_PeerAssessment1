@@ -5,13 +5,39 @@ output:
     keep_md: true
 ---
 
+```{r setOptions, echo=TRUE}
+library(knitr)
+opts_chunk$set(echo = TRUE)
+
+```
 
 ## Loading and preprocessing the data
+```{r loadingData, echo=TRUE}
 
+if (!("activity.csv" %in% dir())){
+  unzip("activity.zip")
+  print("descompactou")
+}
+actData <- read.csv("activity.csv",
+                    header = TRUE,
+                    colClasses = c("numeric", "Date", "numeric"),
+                    na.strings = "NA")
 
+```
 
 ## What is mean total number of steps taken per day?
 
+```{r echo=TRUE}
+meanSteps <- mean(actData$steps, na.rm=TRUE)
+
+```
+
+The mean total number of steps taken per day is `r meanSteps`.
+
+```{r}
+
+
+```
 
 
 ## What is the average daily activity pattern?
