@@ -45,7 +45,8 @@ plot(stepsByDay$Date,
      lwd=8,
      main = "Total of Steps per Day",
      xlab = "Date",
-     ylab = "Frequency")
+     ylab = "Frequency",
+     col = "orange")
 
 meanSteps <- mean(stepsByDay$Steps, na.rm=TRUE)
 medianSteps <- median(stepsByDay$Steps, na.rm = TRUE)
@@ -110,7 +111,8 @@ plot(stepsByDayFil$Date,
      lwd=8,
      main = "Total of Steps per Day after Filling Missing Values",
      xlab = "Date",
-     ylab = "Frequency")
+     ylab = "Frequency",
+     col = "green")
 
 meanStepsFil <- mean(stepsByDayFil$Steps, na.rm=TRUE)
 medianStepsFil <- median(stepsByDayFil$Steps)
@@ -120,7 +122,20 @@ The mean of the total number of steps per day after filling missing values is **
 The median of the total number of steps per day after filling missing values is **`r medianStepsFil`**.
 
 
-
-
-
 ## Are there differences in activity patterns between weekdays and weekends?
+
+```{r weekDaysEndsPattern}
+
+
+actData$fwDay <- factor(weekdays(actData$date), labels = c("weekday", "weekday", "weekend", "weekend", "weekday", "weekday", "weekday"))
+
+#checking if factoring is ok
+View(data.frame(actData$fwDay, weekdays(actData$date)))
+
+
+```
+
+
+
+
+

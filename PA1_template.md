@@ -3,6 +3,7 @@
 
 ```r
 ## loading used libs and setting code to globaly appear along the document
+rm(list = ls())
 library(ggplot2)
 library(knitr)
 opts_chunk$set(echo = TRUE)
@@ -18,7 +19,6 @@ knit_hooks$set(inline = function(x) {
 ```r
 if (!("activity.csv" %in% dir())){
   unzip("activity.zip")
-  print("descompactou")
 }
 actData <- read.csv("activity.csv",
                     header = TRUE,
@@ -39,18 +39,19 @@ plot(stepsByDay$Date,
      lwd=8,
      main = "Total of Steps per Day",
      xlab = "Date",
-     ylab = "Frequency")
+     ylab = "Frequency",
+     col = "orange")
 ```
 
 ![](PA1_template_files/figure-html/stepsPerDay-1.png)<!-- -->
 
 ```r
 meanSteps <- mean(stepsByDay$Steps, na.rm=TRUE)
-medianSteps <- median(stepsByDay$Steps)
+medianSteps <- median(stepsByDay$Steps, na.rm = TRUE)
 ```
 
-The mean of the total number of steps per day is 10,766.19.  
-The median of the total number of steps per day is 10,766.19.
+The mean of the total number of steps per day is **10,766.19**.  
+The median of the total number of steps per day is **10,766.19**.
 
 ## What is the average daily activity pattern?
 
@@ -78,7 +79,52 @@ The **835th** 5-minute interval is the interval that, on average across all the 
 
 
 
-## Imputing missing values
+## Inputing missing values
+
+
+The total number of missing values in the dataset is 2,304
+
+Missing values will be filled with the rounded value of the daily average number of steps
+at the corresponding 5-minute interval.
+
+
+```r
+filledData <- actData
+
+for (i in c(1:length(filledData$steps))){
+  if(is.na(filledData$steps[i])){
+    nRow = i %% 288
+    if (nRow == 0){
+      nRow <- 288
+    }
+    filledData$steps[i] <- round(stepsByInterval$avgSteps[nRow])
+    i <- i + 1
+  }
+}
+
+stepsByDayFil <- aggregate(filledData$steps, by = list(filledData$date), FUN = sum)
+colnames(stepsByDayFil) <- c("Date", "Steps")
+
+plot(stepsByDayFil$Date,
+     stepsByDayFil$Steps,
+     type = "h",
+     lwd=8,
+     main = "Total of Steps per Day after Filling Missing Values",
+     xlab = "Date",
+     ylab = "Frequency",
+     col = "green")
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-1-1.png)<!-- -->
+
+```r
+meanStepsFil <- mean(stepsByDayFil$Steps, na.rm=TRUE)
+medianStepsFil <- median(stepsByDayFil$Steps)
+```
+The mean of the total number of steps per day after filling missing values is **10,765.64**.  
+The median of the total number of steps per day after filling missing values is **10,762**.
+
+
 
 
 
