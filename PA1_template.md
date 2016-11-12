@@ -34,12 +34,10 @@ actData <- read.csv("activity.csv",
 stepsByDay <- aggregate(actData$steps, by = list(actData$date), FUN = sum)
 colnames(stepsByDay) <- c("Date", "Steps")
 
-plot(stepsByDay$Date,
-     stepsByDay$Steps,
-     type = "h",
-     lwd=8,
+hist(x = stepsByDay$Steps,
+     breaks = length(stepsByDay$Steps) - 1,
      main = "Total of Steps per Day",
-     xlab = "Date",
+     xlab = "Number of Steps",
      ylab = "Frequency",
      col = "orange")
 ```
@@ -82,6 +80,10 @@ The **835th** 5-minute interval is the interval that, on average across all the 
 
 ## Inputing missing values
 
+```r
+missingValuesTotal <- sum(is.na(actData$steps))
+```
+
 
 The total number of missing values in the dataset is **2,304**
 
@@ -106,14 +108,12 @@ for (i in c(1:length(filledData$steps))){
 stepsByDayFil <- aggregate(filledData$steps, by = list(filledData$date), FUN = sum)
 colnames(stepsByDayFil) <- c("Date", "Steps")
 
-plot(stepsByDayFil$Date,
-     stepsByDayFil$Steps,
-     type = "h",
-     lwd=8,
+hist(x = stepsByDayFil$Steps,
+     breaks = length(stepsByDayFil$Steps) - 1,
      main = "Total of Steps per Day after Filling Missing Values",
-     xlab = "Date",
+     xlab = "Number of Steps",
      ylab = "Frequency",
-     col = "green")
+     col = "blue")
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-1-1.png)<!-- -->
